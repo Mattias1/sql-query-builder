@@ -1,6 +1,5 @@
-using AdaskoTheBeAsT.Dapper.NodaTime;
-using NodaTime;
 using SqlQueryBuilder.Builder;
+using SqlQueryBuilder.MySql;
 using SqlQueryBuilder.Options;
 using System.Threading.Tasks;
 

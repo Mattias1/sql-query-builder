@@ -1,10 +1,11 @@
 using Dapper;
 using MySql.Data.MySqlClient;
+using SqlQueryBuilder.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SqlQueryBuilder.Options;
+namespace SqlQueryBuilder.MySql;
 
 public sealed class MySqlFlavor : ISqlFlavor {
     private readonly MySqlConnection _connection;
