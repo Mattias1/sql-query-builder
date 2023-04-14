@@ -1,0 +1,39 @@
+name: SqlQueryBuilder CI build pipeline
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup dotnet sdk
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore backend dependencies
+      run: dotnet restore
+    - name: Build backend
+      run: dotnet build --no-restore
+
+    - name: Start database
+      run: docker-compose -f docker/docker-compose.yaml up -d
+
+    - name: Run unit tests
+      run: >
+        dotnet test
+        --no-build
+        --verbosity normal
+        --filter FullyQualifiedName~SqlQueryBuilder.Test
+    - name: Run integration tests
+      run: >
+        dotnet test
+        --no-build
+        --verbosity normal
+        --filter FullyQualifiedName~SqlQueryBuilder.IntegrationTest
