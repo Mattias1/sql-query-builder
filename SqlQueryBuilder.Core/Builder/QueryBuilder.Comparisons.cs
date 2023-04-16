@@ -17,7 +17,7 @@ public sealed partial class QueryBuilder : IComparisonQueryBuilder {
     public IQueryBuilder IsNotNull() => OperatorParameter("is not", null);
 
     public IQueryBuilder Gt(object? value) {
-        return _options.SmartDate && value is LocalDate date
+        return _options.UseSmartDates && value is LocalDate date
             ? OperatorParameter(">=", date.PlusDays(1))
             : OperatorParameter(">", value);
     }
@@ -25,7 +25,7 @@ public sealed partial class QueryBuilder : IComparisonQueryBuilder {
     public IQueryBuilder GtEq(object? value) => OperatorParameter(">=", value);
     public IQueryBuilder Lt(object? value) => OperatorParameter("<", value);
     public IQueryBuilder LtEq(object? value) {
-        return _options.SmartDate && value is LocalDate date
+        return _options.UseSmartDates && value is LocalDate date
             ? OperatorParameter("<", date.PlusDays(1))
             : OperatorParameter("<=", value);
     }

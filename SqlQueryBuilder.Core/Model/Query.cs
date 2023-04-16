@@ -197,7 +197,7 @@ internal sealed class Query {
 
     public string WrapField(string fieldName) {
         if (Options.WrapFieldNames) {
-            if (Options.OverprotectiveSqlInjection && _forbiddenFieldNameCharacters.Any(fieldName.Contains)) {
+            if (Options.UseOverprotectiveSqlInjectionDefence && _forbiddenFieldNameCharacters.Any(fieldName.Contains)) {
                 throw new PotentialSqlInjectionException(string.Join(", ", _forbiddenFieldNameCharacters));
             }
             var wrappedNames = fieldName.Split('.').Select(n => {

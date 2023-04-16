@@ -149,7 +149,7 @@ public sealed class RawQueriesTest {
 
     [Fact]
     public void SemicolonAndDashesAllowedWhenProtectiveOptionIsTurnedOff() {
-        var query = QueryBuilder.Init(new QueryBuilderOptions(new FakeSqlFlavor()) { OverprotectiveSqlInjection = false });
+        var query = QueryBuilder.Init(new QueryBuilderOptions(new FakeSqlFlavor()) { UseOverprotectiveSqlInjectionDefence = false });
         Action func = () => query.Raw("select * from user;-- ").ToParameterizedSql();
         func.Should().NotThrow();
     }

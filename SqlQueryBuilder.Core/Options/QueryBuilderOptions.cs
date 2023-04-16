@@ -6,8 +6,8 @@ namespace SqlQueryBuilder.Options;
 public sealed class QueryBuilderOptions {
     public ISqlFlavor SqlFlavor { get; set; }
     public IColumnFormat ColumnFormat { get; set; }
-    public bool SmartDate { get; set; }
-    public bool OverprotectiveSqlInjection { get; set; }
+    public bool UseSmartDates { get; set; }
+    public bool UseOverprotectiveSqlInjectionDefence { get; set; }
     public bool AddParameterizedSqlToException { get; set; }
     public bool DontParameterizeNumbers { get; set; }
     public bool GuardForForgottenWhere { get; set; }
@@ -15,15 +15,15 @@ public sealed class QueryBuilderOptions {
 
     public QueryBuilderOptions(ISqlFlavor sqlFlavor) : this(sqlFlavor, Default) { }
     public QueryBuilderOptions(ISqlFlavor sqlFlavor, IColumnFormat columnFormat)
-        : this(sqlFlavor, columnFormat, smartDate: true, overprotective: true, addSqlToException: true,
+        : this(sqlFlavor, columnFormat, useSmartDates: true, useOverprotectiveDefence: true, addSqlToException: true,
               dontParameterizeNumbers: true, guardForForgottenWhere: true, wrapFieldNames: true) { }
     public QueryBuilderOptions(ISqlFlavor sqlFlavor, IColumnFormat columnFormat,
-            bool smartDate, bool overprotective, bool addSqlToException,
+            bool useSmartDates, bool useOverprotectiveDefence, bool addSqlToException,
             bool dontParameterizeNumbers, bool guardForForgottenWhere, bool wrapFieldNames) {
         SqlFlavor = sqlFlavor;
         ColumnFormat = columnFormat;
-        SmartDate = smartDate;
-        OverprotectiveSqlInjection = overprotective;
+        UseSmartDates = useSmartDates;
+        UseOverprotectiveSqlInjectionDefence = useOverprotectiveDefence;
         AddParameterizedSqlToException = addSqlToException;
         DontParameterizeNumbers = dontParameterizeNumbers;
         GuardForForgottenWhere = guardForForgottenWhere;
@@ -33,14 +33,14 @@ public sealed class QueryBuilderOptions {
     public static QueryBuilderOptions SmartPreset(ISqlFlavor sqlFlavor) => SmartPreset(sqlFlavor, Default);
     public static QueryBuilderOptions SmartPreset(ISqlFlavor sqlFlavor, IColumnFormat columnFormat) {
         return new QueryBuilderOptions(sqlFlavor, columnFormat,
-            smartDate: true, overprotective: true, addSqlToException: true,
+            useSmartDates: true, useOverprotectiveDefence: true, addSqlToException: true,
             dontParameterizeNumbers: true, guardForForgottenWhere: true, wrapFieldNames: true);
     }
 
     public static QueryBuilderOptions PlainPreset(ISqlFlavor sqlFlavor) => PlainPreset(sqlFlavor, None);
     public static QueryBuilderOptions PlainPreset(ISqlFlavor sqlFlavor, IColumnFormat columnFormat) {
         return new QueryBuilderOptions(sqlFlavor, columnFormat,
-            smartDate: false, overprotective: false, addSqlToException: false,
+            useSmartDates: false, useOverprotectiveDefence: false, addSqlToException: false,
             dontParameterizeNumbers: false, guardForForgottenWhere: false, wrapFieldNames: false);
     }
 
@@ -51,7 +51,7 @@ public sealed class QueryBuilderOptions {
     public QueryBuilderOptions Clone() {
         return new QueryBuilderOptions(
             SqlFlavor, ColumnFormat,
-            SmartDate, OverprotectiveSqlInjection, AddParameterizedSqlToException,
+            UseSmartDates, UseOverprotectiveSqlInjectionDefence, AddParameterizedSqlToException,
             DontParameterizeNumbers, GuardForForgottenWhere, WrapFieldNames
         );
     }

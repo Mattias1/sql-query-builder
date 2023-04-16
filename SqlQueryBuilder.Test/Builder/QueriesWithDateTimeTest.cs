@@ -11,9 +11,9 @@ namespace SqlQueryBuilder.Test.Builder;
 
 public sealed class QueriesWithDateTimeTest {
     private IInitialQueryBuilder Query() => QueryBuilder.Init(
-        new QueryBuilderOptions(new FakeSqlFlavor()) { SmartDate = true, WrapFieldNames = false });
-    private IInitialQueryBuilder WithoutSmartDateQuery() => QueryBuilder.Init(
-        new QueryBuilderOptions(new FakeSqlFlavor()) { SmartDate = false, WrapFieldNames = false });
+        new QueryBuilderOptions(new FakeSqlFlavor()) { UseSmartDates = true, WrapFieldNames = false });
+    private IInitialQueryBuilder QueryWithoutSmartDate() => QueryBuilder.Init(
+        new QueryBuilderOptions(new FakeSqlFlavor()) { UseSmartDates = false, WrapFieldNames = false });
 
     private ZonedClock Clock => FakeClock.FromUtc(2020, 02, 29, 13, 37, 42).InUtc();
 
@@ -75,7 +75,7 @@ public sealed class QueriesWithDateTimeTest {
 
     [Fact]
     public void TestLtEqDateWithoutSmartOptionsDoesntChangeDate() {
-        string sql = WithoutSmartDateQuery().SelectAllFrom("user")
+        string sql = QueryWithoutSmartDate().SelectAllFrom("user")
             .Where("created_at").LtEq(Clock.GetCurrentZonedDateTime().Date)
             .ToUnsafeSql();
         sql.Should().Be("select user.* from user where created_at <= '2020-02-29'");
@@ -91,7 +91,7 @@ public sealed class QueriesWithDateTimeTest {
 
     [Fact]
     public void TestGtDateWithoutSmartOptionsDoesntChangeDate() {
-        string sql = WithoutSmartDateQuery().SelectAllFrom("user")
+        string sql = QueryWithoutSmartDate().SelectAllFrom("user")
             .Where("created_at").Gt(Clock.GetCurrentZonedDateTime().Date)
             .ToUnsafeSql();
         sql.Should().Be("select user.* from user where created_at > '2020-02-29'");

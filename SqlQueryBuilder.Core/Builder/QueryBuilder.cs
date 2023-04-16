@@ -95,7 +95,7 @@ public sealed partial class QueryBuilder : IQueryBuilderBase {
         }
         string query = _query.ToParameterizedSql();
         int semiColonIndex = query.IndexOf(';');
-        if (_options.OverprotectiveSqlInjection) {
+        if (_options.UseOverprotectiveSqlInjectionDefence) {
             if (semiColonIndex >= 0 && semiColonIndex != query.Length - 1) {
                 throw new PotentialSqlInjectionException(";");
             }
