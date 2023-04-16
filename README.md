@@ -24,7 +24,7 @@ public IReadOnlyList<UserTable> Search(string name) {
         .Where("username").Like($"%{name}%")
         .OrderByDesc("created_at")
         .List<UserTable>();
-    // Executes "select `user`.* from `user` where `username` like @0 order by `created_at` desc"
+    // Executes "select `user`.* from `user` where `username` like @p0 order by `created_at` desc"
 }
 
 public class UserTable {
@@ -43,7 +43,7 @@ public bool SaveUser(UserTable item) {
         .SetFrom(item)
         .Where("id").Is(42)
         .Execute();
-    // Executes "update `user` set `id` = 42, `username` = @0, `email` = @1, `created_at` = @2 where `id` = 42"
+    // Executes "update `user` set `id` = 42, `username` = @p0, `email` = @p1, `created_at` = @p2 where `id` = 42"
 }
 ```
 Note that the id is not parameterized, because it's a `long` type, and therefore safe. This will

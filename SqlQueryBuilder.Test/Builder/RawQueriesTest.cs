@@ -35,13 +35,13 @@ public sealed class RawQueriesTest {
             .RawInsertColumn("username, age")
             .RawInsertValue("?, 13", "unlucky")
             .ToParameterizedSql();
-        sql.Should().Be("insert into `user` (username, age) values (@0, 13)");
+        sql.Should().Be("insert into `user` (username, age) values (@p0, 13)");
     }
 
     [Fact]
     public void TestRawUpdate() {
         string sql = Query().Update("user").RawSet("username = ?, age = 13", "unlucky").ToParameterizedSql();
-        sql.Should().Be("update `user` set username = @0, age = 13");
+        sql.Should().Be("update `user` set username = @p0, age = 13");
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public sealed class RawQueriesTest {
         string sql = Query().SelectAllFrom("user")
             .RawWhere(" where counter = ? or counter = ?", 42, 1337)
             .ToParameterizedSql();
-        sql.Should().Be("select `user`.* from `user` where counter = @0 or counter = @1");
+        sql.Should().Be("select `user`.* from `user` where counter = @p0 or counter = @p1");
     }
 
     [Fact]
@@ -84,10 +84,10 @@ public sealed class RawQueriesTest {
             ).RawWhere(" or (username is null and ?=?)", 4, 4)
             .ToParameterizedSql();
         sql.Should().Be("select `user`.* from `user` " +
-            "where `username` like @0 " +
+            "where `username` like @p0 " +
             "or (1=1 and `username` is null) " +
             "or (`username` is null and 2=2 and (not (3=3))) " +
-            "or (username is null and @1=@2)");
+            "or (username is null and @p1=@p2)");
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public sealed class RawQueriesTest {
             .RawGroupBy("color")
             .RawHaving(" having count(*) > ?", 10)
             .ToParameterizedSql();
-        sql.Should().Be("select `color`, count(*) from `user` group by color having count(*) > @0");
+        sql.Should().Be("select `color`, count(*) from `user` group by color having count(*) > @p0");
     }
 
     [Fact]
@@ -112,7 +112,7 @@ public sealed class RawQueriesTest {
         string sql = Query().SelectAllFrom("user")
             .RawLimit(" limit ?, ?", 6, 3)
             .ToParameterizedSql();
-        sql.Should().Be("select `user`.* from `user` limit @0, @1");
+        sql.Should().Be("select `user`.* from `user` limit @p0, @p1");
     }
 
     [Fact]

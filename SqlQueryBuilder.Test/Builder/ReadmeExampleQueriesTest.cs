@@ -19,7 +19,7 @@ public sealed class ReadmeExampleQueriesTest {
             .OrderByDesc("created_at")
             .ToParameterizedSql();
 
-        sql.Should().Be("select `user`.* from `user` where `username` like @0 order by `created_at` desc");
+        sql.Should().Be("select `user`.* from `user` where `username` like @p0 order by `created_at` desc");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public sealed class ReadmeExampleQueriesTest {
             .ToParameterizedSql();
 
         sql.Should().Be("update `user` "
-            + "set `id` = 42, `username` = @0, `email` = @1, `created_at` = @2 "
+            + "set `id` = 42, `username` = @p0, `email` = @p1, `created_at` = @p2 "
             + "where `id` = 42");
     }
 

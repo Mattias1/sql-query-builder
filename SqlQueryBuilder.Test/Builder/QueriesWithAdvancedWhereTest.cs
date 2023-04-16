@@ -26,7 +26,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where("username").Is("admin")
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where username = @0");
+        sql.Should().Be("select user.* from user where username = @p0");
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where("number").Between(900, 1100)
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where number between @0 and @1");
+        sql.Should().Be("select user.* from user where number between @p0 and @p1");
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where("number").NotBetween(900, 1100)
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where number not between @0 and @1");
+        sql.Should().Be("select user.* from user where number not between @p0 and @p1");
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where("username").Like("%a%")
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where username like @0");
+        sql.Should().Be("select user.* from user where username like @p0");
     }
 
     [Fact]
@@ -90,7 +90,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where("username").NotLike("%a%")
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where username not like @0");
+        sql.Should().Be("select user.* from user where username not like @p0");
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public sealed class QueriesWithAdvancedWhereTest {
             .And("number").Lt(500)
             .And("counter").Gt(50)
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where number < @0 and counter > @1");
+        sql.Should().Be("select user.* from user where number < @p0 and counter > @p1");
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public sealed class QueriesWithAdvancedWhereTest {
             .Where("counter").Eq(42)
             .Or("counter").Eq(1337)
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where counter = @0 or counter = @1");
+        sql.Should().Be("select user.* from user where counter = @p0 or counter = @p1");
     }
 
     [Fact]
@@ -119,7 +119,7 @@ public sealed class QueriesWithAdvancedWhereTest {
                 .Or("counter").Isnt(1337)
             )
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where (counter != @0 or counter != @1)");
+        sql.Should().Be("select user.* from user where (counter != @p0 or counter != @p1)");
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public sealed class QueriesWithAdvancedWhereTest {
                 .And("number").LtEq(3600)
             )
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where color = @0 or (number >= @1 and number <= @2)");
+        sql.Should().Be("select user.* from user where color = @p0 or (number >= @p1 and number <= @p2)");
     }
 
     [Fact]
@@ -139,7 +139,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where(q => q.Where(z => z.Where("number").Is(1337)))
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where ((number = @0))");
+        sql.Should().Be("select user.* from user where ((number = @p0))");
     }
 
     [Fact]
@@ -147,7 +147,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .WhereNot(q => q.Where("color").Is("yellow"))
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where not (color = @0)");
+        sql.Should().Be("select user.* from user where not (color = @p0)");
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public sealed class QueriesWithAdvancedWhereTest {
             .Where("username").NotEq("admin")
             .OrNot(q => q.Where("color").Is("orange"))
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where username != @0 or not (color = @1)");
+        sql.Should().Be("select user.* from user where username != @p0 or not (color = @p1)");
     }
 
     [Fact]
@@ -237,7 +237,7 @@ public sealed class QueriesWithAdvancedWhereTest {
         string sql = Query().SelectAllFrom("user")
             .Where("id").In(1, 2, 3)
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where id in (@0, @1, @2)");
+        sql.Should().Be("select user.* from user where id in (@p0, @p1, @p2)");
     }
 
     [Fact]
@@ -246,7 +246,7 @@ public sealed class QueriesWithAdvancedWhereTest {
             .Where("id").In(1, 2, 3)
             .And("username").Like("%test%")
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where id in (1, 2, 3) and username like @0");
+        sql.Should().Be("select user.* from user where id in (1, 2, 3) and username like @p0");
     }
 
     [Fact]
@@ -272,7 +272,7 @@ public sealed class QueriesWithAdvancedWhereTest {
             .Where("id").Isnt(0)
             .And("id").NotIn(1, 2, 3)
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where id != @0 and id not in (@1, @2, @3)");
+        sql.Should().Be("select user.* from user where id != @p0 and id not in (@p1, @p2, @p3)");
     }
 
     [Fact]

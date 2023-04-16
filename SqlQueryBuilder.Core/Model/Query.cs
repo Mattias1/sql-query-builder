@@ -161,7 +161,7 @@ internal sealed class Query {
 
     public void AppendParameter(object? parameter) {
         bool parameterize = true;
-        string key = $"@{Parameters.Count}";
+        string key = $"@p{Parameters.Count}";
 
         if (parameter is null) {
             Builder.Append("null");
@@ -190,7 +190,7 @@ internal sealed class Query {
         var (resultString, parameters) = queryBuilder.ToParameterizedSqlWithParams();
         Builder.Append(resultString);
         foreach (var p in parameters) {
-            string key = $"@{Parameters.Count}";
+            string key = $"@p{Parameters.Count}";
             Parameters.Add(key, p.Value);
         }
     }

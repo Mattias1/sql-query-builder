@@ -168,7 +168,7 @@ public sealed class QueriesWithAdvancedSelect {
         sql.Should().Be("select `s`.*, `sa`.`name` as `historical_name` from `street` as `s` "
             + "join `street_audit` as `sa` on `s`.`id` = `sa`.`id` "
             + "join `user` as `u` on `sa`.`named_after` = `u`.`id` "
-            + "where `u`.`name` like @0");
+            + "where `u`.`name` like @p0");
     }
 
     [Fact]
@@ -181,7 +181,7 @@ public sealed class QueriesWithAdvancedSelect {
         sql.Should().Be("select `u`.* from `user` as `u` "
             + "join `some_table` as `s` on `s`.`user_id` = `u`.`id` "
             + "join `other_table` as `o` on `o`.`user_id` = `u`.`id` "
-            + "where `s`.`some_column` = @0 and `o`.`other_column` != @1 "
+            + "where `s`.`some_column` = @p0 and `o`.`other_column` != @p1 "
             + "order by `s`.`some_order` asc, `o`.`other_order` desc");
     }
 }

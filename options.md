@@ -53,7 +53,7 @@ If enabled this adds the (parameterized) sql string to exceptions.
 ### DontParameterizeNumbers
 If enabled this will not parameterize numbers and booleans.
 For example, `.Where("number").Is(42)` will result in `where number = 42` directly, instead of
-using a paremterized value like `where number = @1`.
+using a paremterized value like `where number = @p0`.
 
 
 ### GuardForForgottenWhere

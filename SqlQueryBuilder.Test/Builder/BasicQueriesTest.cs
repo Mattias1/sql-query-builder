@@ -47,7 +47,7 @@ public sealed class BasicQueriesTest {
     [Fact]
     public void TestSimpleCount() {
         string sql = Query().CountAllFrom("user").Where("age").Gt(9000).ToParameterizedSql();
-        sql.Should().Be("select count(*) from `user` where `age` > @0");
+        sql.Should().Be("select count(*) from `user` where `age` > @p0");
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public sealed class BasicQueriesTest {
             .InsertInto("user")
             .Values(1, "admin", "orange", 1000, 0)
             .ToParameterizedSql();
-        sql.Should().Be("insert into `user` values (@0, @1, @2, @3, @4)");
+        sql.Should().Be("insert into `user` values (@p0, @p1, @p2, @p3, @p4)");
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public sealed class BasicQueriesTest {
             .Columns("id", "username", "color")
             .Values(1, "admin", "orange")
             .ToParameterizedSql();
-        sql.Should().Be("insert into `user` (`id`, `username`, `color`) values (@0, @1, @2)");
+        sql.Should().Be("insert into `user` (`id`, `username`, `color`) values (@p0, @p1, @p2)");
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public sealed class BasicQueriesTest {
                 { "age", 42 }
             };
         string sql = Query().InsertInto("user").InsertFromDictionary(dict).ToParameterizedSql();
-        sql.Should().Be("insert into `user` (`username`, `age`) values (@0, @1)");
+        sql.Should().Be("insert into `user` (`username`, `age`) values (@p0, @p1)");
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public sealed class BasicQueriesTest {
             Age = 1337
         };
         string sql = Query().InsertInto("user").InsertFrom(model).ToParameterizedSql();
-        sql.Should().Be("insert into `user` (`username`, `age`) values (@0, @1)");
+        sql.Should().Be("insert into `user` (`username`, `age`) values (@p0, @p1)");
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public sealed class BasicQueriesTest {
             Age = 42
         };
         string sql = Query().InsertInto("user").InsertFrom(model1, model2).ToParameterizedSql();
-        sql.Should().Be("insert into `user` (`username`, `age`) values (@0, @1), (@2, @3)");
+        sql.Should().Be("insert into `user` (`username`, `age`) values (@p0, @p1), (@p2, @p3)");
     }
 
     [Fact]
@@ -133,7 +133,7 @@ public sealed class BasicQueriesTest {
             .SetColumn("counter", 1)
             .Where("id").Is(1)
             .ToParameterizedSql();
-        sql.Should().Be("update `user` set `age` = @0, `color` = @1, `counter` = @2 where `id` = @3");
+        sql.Should().Be("update `user` set `age` = @p0, `color` = @p1, `counter` = @p2 where `id` = @p3");
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public sealed class BasicQueriesTest {
                 { "age", 42 }
             };
         string sql = Query().Update("user").SetFromDictionary(dict).Where("id").Is(42).ToParameterizedSql();
-        sql.Should().Be("update `user` set `username` = @0, `age` = @1 where `id` = @2");
+        sql.Should().Be("update `user` set `username` = @p0, `age` = @p1 where `id` = @p2");
     }
 
     [Fact]
@@ -167,7 +167,7 @@ public sealed class BasicQueriesTest {
             Age = 1337
         };
         string sql = Query().Update("user").SetFrom(model).Where("id").Is(42).ToParameterizedSql();
-        sql.Should().Be("update `user` set `username` = @0, `age` = @1 where `id` = @2");
+        sql.Should().Be("update `user` set `username` = @p0, `age` = @p1 where `id` = @p2");
     }
 
     [Fact]
@@ -188,7 +188,7 @@ public sealed class BasicQueriesTest {
             .DeleteFrom("user")
             .Where("id").Is(1)
             .ToParameterizedSql();
-        sql.Should().Be("delete from `user` where `id` = @0");
+        sql.Should().Be("delete from `user` where `id` = @p0");
     }
 
     [Fact]

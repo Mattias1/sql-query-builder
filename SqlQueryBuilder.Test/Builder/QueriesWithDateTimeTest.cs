@@ -22,7 +22,7 @@ public sealed class QueriesWithDateTimeTest {
         string sql = Query().SelectAllFrom("user")
             .Where("created_at").Is(Clock.GetCurrentZonedDateTime().ToDateTimeUtc())
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where created_at = @0");
+        sql.Should().Be("select user.* from user where created_at = @p0");
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public sealed class QueriesWithDateTimeTest {
         string sql = Query().SelectAllFrom("user")
             .Where("created_at").Is(Clock.GetCurrentZonedDateTime())
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where created_at = @0");
+        sql.Should().Be("select user.* from user where created_at = @p0");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public sealed class QueriesWithDateTimeTest {
         string sql = Query().SelectAllFrom("user")
             .Where("created_at").Is(Clock.GetCurrentLocalDateTime())
             .ToParameterizedSql();
-        sql.Should().Be("select user.* from user where created_at = @0");
+        sql.Should().Be("select user.* from user where created_at = @p0");
     }
 
     [Fact]

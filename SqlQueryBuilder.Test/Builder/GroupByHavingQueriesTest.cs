@@ -44,7 +44,7 @@ public sealed class GroupByHavingQueriesTest {
             .OrderByAsc("colors")
             .ToParameterizedSql();
         sql.Should().Be("select `color`, count(*) as `colors` from `user` "
-            + "group by `color` having `colors` <= @0 order by `colors` asc");
+            + "group by `color` having `colors` <= @p0 order by `colors` asc");
     }
 
     [Fact]
@@ -67,10 +67,10 @@ public sealed class GroupByHavingQueriesTest {
             .ToParameterizedSql();
 
         sql.Should().Be("select `user`.* from `user` "
-            + "having (`age` > @0 and `counter` > @1) "
-            + "or (`age` > @2 and `counter` > @3 and ("
-            + "not (`color` like @4) or not (`color` like @5) and not (`color` like @6))"
+            + "having (`age` > @p0 and `counter` > @p1) "
+            + "or (`age` > @p2 and `counter` > @p3 and ("
+            + "not (`color` like @p4) or not (`color` like @p5) and not (`color` like @p6))"
             + ") "
-            + "or `age` = @7");
+            + "or `age` = @p7");
     }
 }
