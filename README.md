@@ -64,7 +64,7 @@ public async Task<IReadOnlyList<GroupingTableStructure>> NewUsersWithManyRoles()
         .JoinAs("role", "r", "ru.role_id", "r.id")
         .Where(q => q
             .Where("u.created_at").Gt(new LocalDate(2020, 02, 29))
-            .Or("username").Is("moderator") // As benchmark
+            .Or("username").Is("moderator")
         )
         .AndNot(q => q
             .Where("u.id").Is(1)
@@ -99,4 +99,4 @@ public async Task<IReadOnlyList<GroupingTableStructure>> NewUsersWithManyRoles()
 Note that the date check `if date > feb 29` is transformed to `if date >= march 01`, to make sure
 that noon feb 29 for example is not included in the check. This is only done for a `LocalDate`, not
 for any other date types, like `LocalDateTime` or `System.DateTime` for example.
-Again, if you don't like this, you can turn the [option](options.md) off.
+Again, if you don't like this, you can turn this [option](options.md) off.

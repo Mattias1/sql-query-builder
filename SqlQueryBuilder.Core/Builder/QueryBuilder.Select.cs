@@ -34,7 +34,7 @@ public sealed partial class QueryBuilder : ISelectQueryBuilder, IGroupByQueryBui
     public ISelectQueryBuilder SelectSubquery(SubQueryFunc queryFunc) => SubquerySelect(null, queryFunc);
 
     private ISelectQueryBuilder SubquerySelect(string? alias, SubQueryFunc queryFunc) {
-        var queryBuilder = new QueryBuilder(_options);
+        var queryBuilder = InitSubQueryBuilder();
         queryFunc(queryBuilder);
         _query.SelectColumns.Add(new ColumnSubquery(alias, queryBuilder));
         return this;
@@ -53,7 +53,7 @@ public sealed partial class QueryBuilder : ISelectQueryBuilder, IGroupByQueryBui
     public IQueryBuilder From(SubQueryFunc queryFunc) => SubqueryFrom(null, queryFunc);
 
     private IQueryBuilder SubqueryFrom(string? alias, SubQueryFunc queryFunc) {
-        var queryBuilder = new QueryBuilder(_options);
+        var queryBuilder = InitSubQueryBuilder();
         queryFunc(queryBuilder);
         _query.SelectFrom.Add(new TableSubquery(alias, queryBuilder));
         return this;

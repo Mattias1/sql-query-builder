@@ -18,7 +18,7 @@ internal readonly struct Where : IWhere {
     }
 
     public void AppendToQuery(Query query, bool isFirst) {
-        var recursiveQuery = new Query(query.Options, query.Parameters, new StringBuilder());
+        var recursiveQuery = new Query(query.Options, query.Parameters, new StringBuilder(), query);
         recursiveQuery.AppendQueryParts(WhereForest);
 
         string resultString = recursiveQuery.ToParameterizedSqlInternal();

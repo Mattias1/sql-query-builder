@@ -107,10 +107,10 @@ public sealed partial class QueryBuilder : IComparisonQueryBuilder {
         if (_preparedLeaf is null) {
             throw new InvalidOperationException("You can only add a comparison after you've initiated a where, and or or.");
         }
-        var queryBuilder = new QueryBuilder(_options);
+        var preparedLeaf = _preparedLeaf.Value;
+        var queryBuilder = InitSubQueryBuilder();
         queryFunc(queryBuilder);
-        _preparedLeaf.Value.forest.Add(new WhereSubQuery(_preparedLeaf.Value.type,
-            _preparedLeaf.Value.column, @operator, queryBuilder));
+        preparedLeaf.forest.Add(new WhereSubQuery(preparedLeaf.type, preparedLeaf.column, @operator, queryBuilder));
         return this;
     }
 }

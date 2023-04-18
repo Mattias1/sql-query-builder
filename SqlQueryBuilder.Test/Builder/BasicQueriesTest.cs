@@ -207,6 +207,12 @@ public sealed class BasicQueriesTest {
     }
 
     [Fact]
+    public void TestClonedDeleteExplicitlyWithoutWhere() {
+        var query = Query().DeleteFrom("user").WithoutWhere().Clone().ToParameterizedSql();
+        query.Should().Be("delete from `user`");
+    }
+
+    [Fact]
     public void TestPagination() {
         var query = Query().SelectAllFrom("user").Where("id").Gt(42);
         string sqlCount = query.CloneWithoutSelect().CountAll().ToUnsafeSql();

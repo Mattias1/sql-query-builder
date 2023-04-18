@@ -127,4 +127,104 @@ public sealed class SubqueriesTest {
             + "select `col1`, `col2` from `other_table`"
             + ") as `other` where `my_table`.`id` = `other_table`.`id`");
     }
+
+    [Fact]
+    public void TestSubQueryParameterOrderInOneGo() {
+        string sql = Query().SelectAllFrom("user")
+            .Where("user.username").Eq("grandpa")
+            .OrWhere("user.counter").Eq(q => q
+                .Select().Max("counter")
+                .From("statistics")
+                .Where("type").Is("birthdays")
+            )
+            .OrWhere("user.created_at").Lt(new LocalDate(1970, 01, 01))
+            .ToParameterizedSql();
+        sql.Should().Be("select `user`.* from `user` "
+            + "where `user`.`username` = @p0 "
+            + "or `user`.`counter` = (select max(`counter`) from `statistics` where `type` = @p1) "
+            + "or `user`.`created_at` < @p2");
+    }
+
+    [Fact]
+    public void TestSubQueryParameterOrderInMultiplePasses() {
+        var query = Query().SelectAllFrom("user");
+
+        query.Where("username").Eq("grandpa");
+
+        query.OrWhere("counter").Eq(subquery => {
+            // Admittedly, this is not a very pretty thing to do, but it's valid syntactically, so it should work
+            query.OrWhere("created_at").Eq(new LocalDate(1971, 01, 01));
+
+            subquery.Select().Max("counter").From("statistics");
+
+            query.OrWhere("created_at").Eq(new LocalDate(1972, 01, 01));
+
+            subquery.Cast().Where("type").Is("birthdays");
+
+            query.OrWhere("created_at").Eq(new LocalDate(1973, 01, 01));
+
+            return subquery.Cast();
+        });
+
+        query.OrWhere("created_at").Eq(new LocalDate(1974, 01, 01));
+
+        string sql = query.ToParameterizedSql();
+
+        sql.Should().Be("select `user`.* from `user` "
+            + "where `username` = @p0 "
+            + "or `created_at` = @p1 "
+            + "or `created_at` = @p2 "
+            + "or `created_at` = @p3 "
+            + "or `counter` = (select max(`counter`) from `statistics` where `type` = @p4) "
+            + "or `created_at` = @p5");
+    }
+
+    [Fact]
+    public void TestSubQueryParameterOrderRecursively() {
+        var query = Query().SelectAllFrom("user");
+
+        query.Where("color").Eq("first");
+
+        query.OrWhere("statistic_thing").Eq(subquery => {
+            // Right... I hope no one actually does this. But again, it should work.
+            query.OrWhere("color").Eq("second");
+
+            subquery.Select().Max("thing").From("statistics")
+                .Where("type").Is("sub1");
+
+            query.OrWhere("color").Eq("third");
+
+            subquery.Cast().And("thing").NotEq(subSubquery => {
+                query.OrWhere("color").Eq("fourth");
+
+                subSubquery.Select().Min("thing").From("statistics")
+                    .Where("type").Is("sub2");
+
+                query.OrWhere("color").Eq("fifth");
+
+                return subSubquery.Cast();
+            });
+
+            query.OrWhere("color").Eq("sixth");
+
+            return subquery.Cast();
+        });
+
+        query.OrWhere("color").Eq("seventh");
+
+        string sql = query.ToUnsafeSql();
+
+        sql.Should().Be("select `user`.* from `user` "
+            + "where `color` = 'first' "
+            + "or `color` = 'second' "
+            + "or `color` = 'third' "
+            + "or `color` = 'fourth' "
+            + "or `color` = 'fifth' "
+            + "or `color` = 'sixth' "
+            + "or `statistic_thing` = ("
+            + "select max(`thing`) from `statistics` where `type` = 'sub1' "
+            + "and `thing` != (select min(`thing`) from `statistics` where `type` = 'sub2')"
+            + ") "
+            + "or `color` = 'seventh'");
+    }
 }

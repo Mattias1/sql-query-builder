@@ -10,8 +10,6 @@ using System.Text;
 namespace SqlQueryBuilder.Model;
 
 internal sealed class Query {
-    public QueryBuilderOptions Options { get; }
-
     public List<IQueryPart> RawQueryParts { get; } = new List<IQueryPart>();
 
     public ITable? InsertTable { get; set; }
@@ -33,19 +31,22 @@ internal sealed class Query {
     public List<IWhere> HavingForest { get; } = new List<IWhere>();
     public List<IOrderBy> OrderByList { get; } = new List<IOrderBy>();
 
-    public List<ILimit> Limits { get; set; } = new List<ILimit>();
+    public List<ILimit> Limits { get; } = new List<ILimit>();
 
+    public QueryBuilderOptions Options { get; }
     public Dictionary<string, object?> Parameters { get; private set; }
     public StringBuilder Builder { get; private set; }
 
+    private readonly Query? _rootQuery;
     private readonly char[] _forbiddenFieldNameCharacters;
 
-    public Query(QueryBuilderOptions options)
-        : this(options, new Dictionary<string, object?>(), new StringBuilder()) { }
+    public Query(QueryBuilderOptions options, Query? rootQuery)
+        : this(options, new Dictionary<string, object?>(), new StringBuilder(), rootQuery) { }
 
-    internal Query(QueryBuilderOptions options, Dictionary<string, object?> parameters, StringBuilder sb) {
+    internal Query(QueryBuilderOptions options, Dictionary<string, object?> parameters, StringBuilder sb, Query? rootQuery) {
+        _rootQuery = rootQuery;
         Options = options;
-        Parameters = parameters;
+        Parameters = rootQuery?.Parameters ?? parameters;
         Builder = sb;
 
         _forbiddenFieldNameCharacters = options.SqlFlavor.ForbiddenFieldNameCharacters();
@@ -54,7 +55,7 @@ internal sealed class Query {
     public override string ToString() => ToParameterizedSql();
 
     public string ToParameterizedSql() {
-        if (Parameters.Count > 0) {
+        if (Parameters.Count > 0 && _rootQuery is null) { // Reset in case this is called multiple times
             Parameters = new Dictionary<string, object?>();
             Builder = new StringBuilder();
         }
@@ -187,12 +188,8 @@ internal sealed class Query {
     }
 
     public void AppendSubquery(QueryBuilder queryBuilder) {
-        var (resultString, parameters) = queryBuilder.ToParameterizedSqlWithParams();
+        var resultString = queryBuilder.ToParameterizedSql();
         Builder.Append(resultString);
-        foreach (var p in parameters) {
-            string key = $"@p{Parameters.Count}";
-            Parameters.Add(key, p.Value);
-        }
     }
 
     public string WrapField(string fieldName) {
@@ -200,9 +197,7 @@ internal sealed class Query {
             if (Options.UseOverprotectiveSqlInjectionDefence && _forbiddenFieldNameCharacters.Any(fieldName.Contains)) {
                 throw new PotentialSqlInjectionException(string.Join(", ", _forbiddenFieldNameCharacters));
             }
-            var wrappedNames = fieldName.Split('.').Select(n => {
-                return n == "*" ? n : Options.SqlFlavor.WrapFieldName(n);
-            });
+            var wrappedNames = fieldName.Split('.').Select(n => n == "*" ? n : Options.SqlFlavor.WrapFieldName(n));
             return string.Join('.', wrappedNames);
         }
         return fieldName;
@@ -212,7 +207,8 @@ internal sealed class Query {
         var query = new Query(
             Options.Clone(),
             new Dictionary<string, object?>(Parameters),
-            new StringBuilder(Builder.ToString())
+            new StringBuilder(Builder.ToString()),
+            _rootQuery?.Clone()
         );
 
         query.RawQueryParts.AddRange(RawQueryParts);

@@ -18,14 +18,15 @@ public sealed partial class QueryBuilder : IQueryBuilderBase {
     public static IInitialQueryBuilder Init(ISqlFlavor sqlFlavor) => Init(new QueryBuilderOptions(sqlFlavor));
     public static IInitialQueryBuilder Init(ISqlFlavor sqlFlavor, IColumnFormat columnFormat)
         => Init(new QueryBuilderOptions(sqlFlavor, columnFormat));
-    public static IInitialQueryBuilder Init(QueryBuilderOptions options) => new QueryBuilder(options);
+    public static IInitialQueryBuilder Init(QueryBuilderOptions options)
+        => new QueryBuilder(options, new Query(options, null), false);
 
-    internal QueryBuilder(QueryBuilderOptions options) : this(options, new Query(options)) { }
+    private QueryBuilder InitSubQueryBuilder() => new QueryBuilder(_options, new Query(_options, _query), false);
 
-    private QueryBuilder(QueryBuilderOptions options, Query query) {
+    private QueryBuilder(QueryBuilderOptions options, Query query, bool explicitlyWithoutWhere) {
         _options = options;
         _query = query;
-        _explicitlyWithoutWhere = false;
+        _explicitlyWithoutWhere = explicitlyWithoutWhere;
     }
 
     public ICompleteQueryBuilder Cast() => this;
@@ -80,11 +81,6 @@ public sealed partial class QueryBuilder : IQueryBuilderBase {
         return query;
     }
 
-    internal (string sql, Dictionary<string, object?> parameters) ToParameterizedSqlWithParams() {
-        string sql = ToParameterizedSql();
-        return (sql, _query.Parameters);
-    }
-
     public string ToParameterizedSql() {
         if (_options.GuardForForgottenWhere && !_explicitlyWithoutWhere
                 && _query.WhereForest.Count == 0
@@ -94,8 +90,8 @@ public sealed partial class QueryBuilder : IQueryBuilderBase {
                 + "If this is intentional, please specify by calling '.WithoutWhere()'.");
         }
         string query = _query.ToParameterizedSql();
-        int semiColonIndex = query.IndexOf(';');
         if (_options.UseOverprotectiveSqlInjectionDefence) {
+            int semiColonIndex = query.IndexOf(';');
             if (semiColonIndex >= 0 && semiColonIndex != query.Length - 1) {
                 throw new PotentialSqlInjectionException(";");
             }
@@ -106,11 +102,11 @@ public sealed partial class QueryBuilder : IQueryBuilderBase {
         return query;
     }
 
-    public ICompleteQueryBuilder Clone() => new QueryBuilder(_options.Clone(), _query.Clone());
+    public ICompleteQueryBuilder Clone() => new QueryBuilder(_options.Clone(), _query.Clone(), _explicitlyWithoutWhere);
     public ICompleteQueryBuilder CloneWithoutSelect() {
         var query = _query.Clone();
         query.SelectColumns.Clear();
-        return new QueryBuilder(_options.Clone(), query);
+        return new QueryBuilder(_options.Clone(), query, _explicitlyWithoutWhere);
     }
 }
 

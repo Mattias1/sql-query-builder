@@ -24,7 +24,7 @@ public sealed partial class QueryBuilder : IHavingQueryBuilder {
     }
 
     private IQueryBuilder RecursiveHaving(WhereType type, SubWhereFunc queryFunc) {
-        var queryBuilder = new QueryBuilder(_options);
+        var queryBuilder = InitSubQueryBuilder();
         queryFunc(queryBuilder);
         _query.HavingForest.Add(new Where(type, queryBuilder._query.HavingForest));
         return this;

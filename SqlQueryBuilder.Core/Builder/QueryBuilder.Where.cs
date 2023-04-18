@@ -25,7 +25,7 @@ public sealed partial class QueryBuilder : IWhereQueryBuilder {
     public IQueryBuilder OrNot(SubWhereFunc queryFunc) => RecursiveWhere(WhereType.OrNot, queryFunc);
 
     private IQueryBuilder RecursiveWhere(WhereType type, SubWhereFunc queryFunc) {
-        var queryBuilder = new QueryBuilder(_options);
+        var queryBuilder = InitSubQueryBuilder();
         queryFunc(queryBuilder);
         _query.WhereForest.Add(new Where(type, queryBuilder._query.WhereForest));
         return this;
@@ -40,7 +40,7 @@ public sealed partial class QueryBuilder : IWhereQueryBuilder {
     public IQueryBuilder WhereNotExists(SubQueryFunc queryFunc) => SubqueryWhere("not exists", queryFunc);
 
     private IQueryBuilder SubqueryWhere(string @operator, SubQueryFunc queryFunc) {
-        var queryBuilder = new QueryBuilder(_options);
+        var queryBuilder = InitSubQueryBuilder();
         queryFunc(queryBuilder);
         _query.WhereForest.Add(new WhereSubQuery(WhereType.And, null, @operator, queryBuilder));
         return this;
