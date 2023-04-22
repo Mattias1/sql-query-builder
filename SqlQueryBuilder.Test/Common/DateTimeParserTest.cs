@@ -38,7 +38,7 @@ public sealed class DateTimeParserTest {
     [Fact]
     public void ParseZonedDateTimeNotInUtcParameter() {
         var zone = DateTimeZone.ForOffset(Offset.FromHours(2));
-        Action parser = () => DateTimeParser.ParseQueryParameter(TestDateTime.InZoneStrictly(zone), out string? result);
+        Action parser = () => DateTimeParser.ParseQueryParameter(TestDateTime.InZoneStrictly(zone), out string? _);
         parser.Should().Throw<SqlQueryBuilderException>();
     }
 

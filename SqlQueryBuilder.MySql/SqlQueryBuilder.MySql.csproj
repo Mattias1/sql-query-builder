@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <Description>A lightweight querybuilder, using Dapper internally.</Description>
+    <AssemblyTitle>SQL Query Builder for MySql</AssemblyTitle>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
