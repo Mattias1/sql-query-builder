@@ -1,7 +1,7 @@
 using FluentAssertions;
 using SqlQueryBuilder.Builder;
 using SqlQueryBuilder.Options;
-using SqlQueryBuilder.Test.Fakes;
+using SqlQueryBuilder.Testing;
 using System;
 using Xunit;
 

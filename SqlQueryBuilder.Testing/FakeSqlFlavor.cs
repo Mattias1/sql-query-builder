@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SqlQueryBuilder.Test.Fakes;
+namespace SqlQueryBuilder.Testing;
 
 public sealed class FakeSqlFlavor : ISqlFlavor {
     // --- Implementation of the fake ---
@@ -35,7 +35,7 @@ public sealed class FakeSqlFlavor : ISqlFlavor {
 
     public Task<ISqlTransactionFlavor> BeginTransactionAsync() => Task.FromResult(BeginTransaction());
 
-    public ISqlTransactionFlavor BeginTransaction() => throw new System.NotImplementedException();
+    public ISqlTransactionFlavor BeginTransaction() => new FakeTransactionFlavor(this);
 
     public string WrapFieldName(string fieldName) => $"`{fieldName}`";
 

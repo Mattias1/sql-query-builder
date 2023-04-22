@@ -16,6 +16,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SqlQueryBuilder.Core\SqlQueryBuilder.Core.csproj" />
+    <ProjectReference Include="..\SqlQueryBuilder.Testing\SqlQueryBuilder.Testing.csproj" />
   </ItemGroup>
 </Project>

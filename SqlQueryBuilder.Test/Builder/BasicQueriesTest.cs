@@ -2,7 +2,7 @@ using FluentAssertions;
 using SqlQueryBuilder.Builder;
 using SqlQueryBuilder.Exceptions;
 using SqlQueryBuilder.Options;
-using SqlQueryBuilder.Test.Fakes;
+using SqlQueryBuilder.Testing;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -231,6 +231,35 @@ public sealed class BasicQueriesTest {
     public void NoCommentStringAllowedOutsideParameterizedString() {
         Action func = () => Query().SelectAllFrom("user--").ToParameterizedSql();
         func.Should().Throw<PotentialSqlInjectionException>();
+    }
+
+    [Fact]
+    public void TestTransactionCommit() {
+        const string expectedQuery = "delete from `user` where `id` = 3";
+        var fakeSqlFlavor = new FakeSqlFlavor();
+
+        using (var tran = fakeSqlFlavor.BeginTransaction()) {
+            QueryBuilder.Init(tran).DeleteFrom("user").Where("id").Is(3).Execute();
+
+            fakeSqlFlavor.ExecutedQueries.Should().NotContain(expectedQuery);
+
+            tran.Commit();
+        }
+
+        fakeSqlFlavor.ExecutedQueries.Should().Contain(expectedQuery);
+    }
+
+    [Fact]
+    public void TestTransactionRollback() {
+        const string expectedQuery = "delete from `user` where `id` = 3";
+        var fakeSqlFlavor = new FakeSqlFlavor();
+
+        using (var tran = fakeSqlFlavor.BeginTransaction()) {
+            QueryBuilder.Init(tran).DeleteFrom("user").Where("id").Is(3).Execute();
+            tran.Rollback();
+        }
+
+        fakeSqlFlavor.ExecutedQueries.Should().NotContain(expectedQuery);
     }
 
     private sealed class TestUserTable {

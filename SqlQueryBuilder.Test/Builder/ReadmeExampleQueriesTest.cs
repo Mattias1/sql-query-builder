@@ -1,7 +1,7 @@
 using FluentAssertions;
 using NodaTime;
 using SqlQueryBuilder.Builder;
-using SqlQueryBuilder.Test.Fakes;
+using SqlQueryBuilder.Testing;
 using Xunit;
 
 namespace SqlQueryBuilder.Test.Builder;

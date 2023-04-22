@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryBuilder.Core", "Sql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryBuilder.MySql", "SqlQueryBuilder.MySql\SqlQueryBuilder.MySql.csproj", "{7B7E5FA4-345C-4464-858D-BAFF5CE6E543}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryBuilder.Testing", "SqlQueryBuilder.Testing\SqlQueryBuilder.Testing.csproj", "{ADC33DDF-5684-4E0D-BDD9-0DB3AD56E7A5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryBuilder.Test", "SqlQueryBuilder.Test\SqlQueryBuilder.Test.csproj", "{E2F9B513-95AD-4ADC-B398-12AF615F6BD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlQueryBuilder.IntegrationTest", "SqlQueryBuilder.IntegrationTest\SqlQueryBuilder.IntegrationTest.csproj", "{FB8D151F-2643-4DE5-9E7A-1B073B93CD2D}"
@@ -30,6 +32,10 @@ Global
 		{7B7E5FA4-345C-4464-858D-BAFF5CE6E543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B7E5FA4-345C-4464-858D-BAFF5CE6E543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B7E5FA4-345C-4464-858D-BAFF5CE6E543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADC33DDF-5684-4E0D-BDD9-0DB3AD56E7A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADC33DDF-5684-4E0D-BDD9-0DB3AD56E7A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADC33DDF-5684-4E0D-BDD9-0DB3AD56E7A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADC33DDF-5684-4E0D-BDD9-0DB3AD56E7A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2F9B513-95AD-4ADC-B398-12AF615F6BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2F9B513-95AD-4ADC-B398-12AF615F6BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2F9B513-95AD-4ADC-B398-12AF615F6BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
