@@ -1,6 +1,6 @@
 -- Database structure --
-CREATE DATABASE `sqlquirybuilder_it_db`;
-USE `sqlquirybuilder_it_db`;
+CREATE DATABASE `sqlquerybuilder_it_db`;
+USE `sqlquerybuilder_it_db`;
 
 CREATE TABLE `street` (
     `id` BIGINT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `user` (
 
 -- User privileges --
 CREATE USER 'sqlqb_it_user'@'%' IDENTIFIED BY 'devapp';
-GRANT SELECT, INSERT, UPDATE, DELETE ON `sqlquirybuilder_it_db`.* TO 'sqlqb_it_user'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `sqlquerybuilder_it_db`.* TO 'sqlqb_it_user'@'%';
 
 
 -- Insert data --

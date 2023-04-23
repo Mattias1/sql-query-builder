@@ -10,7 +10,7 @@ public sealed class DbContext {
     private const int PORT = 53306;
     private const string USER = "sqlqb_it_user";
     private const string PASSWORD = "devapp";
-    private const string DATABASE = "sqlquirybuilder_it_db";
+    private const string DATABASE = "sqlquerybuilder_it_db";
 
     private static DbContext? _instance;
     public static DbContext MySql => _instance ??= new DbContext(new MySqlFlavor(SERVER, PORT, USER, PASSWORD, DATABASE));
