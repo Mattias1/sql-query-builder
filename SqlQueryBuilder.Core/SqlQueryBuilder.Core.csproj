@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>Mattias1.SqlQueryBuilder.Core</PackageId>
     <Description>A lightweight querybuilder, using Dapper internally.</Description>
     <AssemblyTitle>SQL Query Builder</AssemblyTitle>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
