@@ -5,8 +5,15 @@
     <AssemblyTitle>SQL Query Builder Fakes</AssemblyTitle>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Mattias1/sql-query-builder</RepositoryUrl>
+    <PackageTags>sql;query-builder;query;builder;dapper;testing</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SqlQueryBuilder.Core\SqlQueryBuilder.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

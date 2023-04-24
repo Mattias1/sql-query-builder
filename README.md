@@ -1,15 +1,31 @@
-SQL Query builder
+SQL Query Builder
 ==================
-A lightweight querybuilder for my database interactions, using Dapper internally.
+A lightweight query builder for my database interactions, using
+[Dapper](https://dapper-tutorial.net/) internally.
 
 I wanted a small, lightweight builder to make simple sql queries. I couldn't find anything
 that I liked, so I made my own.
+
+
+NuGet packages
+---------------
+You can install the builder via NuGet.
+- For MySql databases, use
+  [Mattias1.SqlQueryBuilder.MySql](https://www.nuget.org/packages/Mattias1.SqlQueryBuilder.MySql).
+- For other databases you can install
+  [Mattias1.SqlQueryBuilder.Core](https://www.nuget.org/packages/Mattias1.SqlQueryBuilder.Core) and
+  add your own implementations of the ISqlFlavor interfaces (for inspiration, look
+  [here](SqlQueryBuilder.MySql/MySqlFlavor.cs) and
+  [here](SqlQueryBuilder.MySql/MySqlTransactionFlavor.cs)).
+- There's also fake implementations available for unit tests at
+  [Mattias1.SqlQueryBuilder.Testing](https://www.nuget.org/packages/Mattias1.SqlQueryBuilder.Testing).
 
 
 Examples
 ---------
 A simple select query:
 ``` csharp
+using NodaTime;
 using SqlQueryBuilder.Builder;
 using SqlQueryBuilder.MySql;
 
@@ -100,3 +116,9 @@ Note that the date check `if date > feb 29` is transformed to `if date >= march 
 that noon feb 29 for example is not included in the check. This is only done for a `LocalDate`, not
 for any other date types, like `LocalDateTime` or `System.DateTime` for example.
 Again, if you don't like this, you can turn this [option](options.md) off.
+
+
+Known issues
+-------------
+NodaTime's `ZonedDateTime` is not supported, see
+[AdaskoTheBeAsT.Dapper.NodaTime](https://github.com/AdaskoTheBeAsT/AdaskoTheBeAsT.Dapper.NodaTime#readme).
