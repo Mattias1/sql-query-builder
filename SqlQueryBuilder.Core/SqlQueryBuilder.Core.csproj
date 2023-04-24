@@ -6,6 +6,10 @@
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <RootNamespace>SqlQueryBuilder</RootNamespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Mattias1/sql-query-builder</RepositoryUrl>
+    <PackageTags>sql;query-builder;query;builder;dapper</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AdaskoTheBeAsT.Dapper.NodaTime" Version="1.0.1" />

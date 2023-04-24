@@ -5,6 +5,10 @@
     <AssemblyTitle>SQL Query Builder for MySql</AssemblyTitle>
     <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/Mattias1/sql-query-builder</RepositoryUrl>
+    <PackageTags>sql;query-builder;query;builder;dapper;mysql</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.32.1" />
