@@ -19,7 +19,8 @@ This is used to specify how the Insert and Update queries format the columns.
 
 Provided options are `IdentityColumnFormat` and `CamelToSnakeColumnFormat` (default).
 You can add your own format if you want.
-For inspiration, take a look [here](/SqlQueryBuilder.Core/Options/CamelToSnakeColumnFormat.cs).
+For inspiration, take a look
+[here](https://github.com/Mattias1/sql-query-builder/blob/master/SqlQueryBuilder.Core/Options/CamelToSnakeColumnFormat.cs).
 
 **Note** that Dapper by default cannot deal with snake case and NodaTime objects. You can enable that
 globally with something like: `QueryBuilderOptions.SetupDapperWithSnakeCaseAndNodaTime();`

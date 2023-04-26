@@ -15,8 +15,8 @@ You can install the builder via NuGet.
 - For other databases you can install
   [Mattias1.SqlQueryBuilder.Core](https://www.nuget.org/packages/Mattias1.SqlQueryBuilder.Core) and
   add your own implementations of the ISqlFlavor interfaces (for inspiration, look
-  [here](SqlQueryBuilder.MySql/MySqlFlavor.cs) and
-  [here](SqlQueryBuilder.MySql/MySqlTransactionFlavor.cs)).
+  [here](https://github.com/Mattias1/sql-query-builder/blob/master/SqlQueryBuilder.MySql/MySqlFlavor.cs) and
+  [here](https://github.com/Mattias1/sql-query-builder/blob/master/SqlQueryBuilder.MySql/MySqlTransactionFlavor.cs)).
 - There's also fake implementations available for unit tests at
   [Mattias1.SqlQueryBuilder.Testing](https://www.nuget.org/packages/Mattias1.SqlQueryBuilder.Testing).
 
@@ -65,7 +65,8 @@ public bool SaveUser(UserTable item) {
 Note that the id is not parameterized, because it's a `long` type, and therefore safe. This will
 give you a performance boost for large where in lists.
 Also note that if you forget the where clause, it'll throw an exception.
-You can turn these [options](options.md) off if you want.
+You can turn these [options](https://github.com/Mattias1/sql-query-builder/blob/master/options.md)
+off if you want.
 
 Note also that this assumes Dapper can deal with snake case and NodaTime objects. You can enable
 that with something like: `QueryBuilderOptions.SetupDapperWithSnakeCaseAndNodaTime();`
@@ -115,7 +116,8 @@ public async Task<IReadOnlyList<GroupingTableStructure>> NewUsersWithManyRoles()
 Note that the date check `if date > feb 29` is transformed to `if date >= march 01`, to make sure
 that noon feb 29 for example is not included in the check. This is only done for a `LocalDate`, not
 for any other date types, like `LocalDateTime` or `System.DateTime` for example.
-Again, if you don't like this, you can turn this [option](options.md) off.
+Again, if you don't like this, you can turn this
+[option](https://github.com/Mattias1/sql-query-builder/blob/master/options.md) off.
 
 
 Known issues
