@@ -124,3 +124,25 @@ Known issues
 -------------
 NodaTime's `ZonedDateTime` is not supported, see
 [AdaskoTheBeAsT.Dapper.NodaTime](https://github.com/AdaskoTheBeAsT/AdaskoTheBeAsT.Dapper.NodaTime#readme).
+
+
+Setup development environment
+------------------------------
+Dependencies:
+- Dotnet 7 SDK
+- Docker and docker-compose.
+
+You can develop using tests:
+```shell
+# Unit tests
+dotnet test --filter FullyQualifiedName~SqlQueryBuilder.Test
+
+# Integration tests
+sudo docker-compose -f docker/docker-compose.yaml up -d
+dotnet test --filter FullyQualifiedName~SqlQueryBuilder.IntegrationTest
+```
+
+
+Publish release
+----------------
+Create a github release with a tag named 'vx.y.z'.
